@@ -280,6 +280,24 @@ def test_live_reviewer_needs_key():
         run_checks.LiveReviewer(Settings.from_env(PINNED_ENV), FakeGateway())
 
 
+# --- rereview ---------------------------------------------------------------------------------
+
+def test_rereview_replaces_verdicts_of_the_reviewed_version(live_settings):
+    from evals import rereview
+    rows = [{"id": "bakery", "state": {"id": "run1", "brief": "Нужен сайт пекарни", "specs": [
+                {"round": 1, "spec": {"title": "v1"}, "review": [{"id": "Ч1", "ok": False, "note": "старое"}]},
+                {"round": 2, "spec": VALID["bakery"], "review": [{"id": "Ч1", "ok": True, "note": ""}]}]}},
+            {"id": "noreview", "state": {"id": "run2", "specs": []}}]
+    gw = FakeGateway([review_reply({"Ч4": "нет поля связи"})])
+    out, budget = rereview.rereview(rows, run_checks.LiveReviewer(live_settings, gw), max_rub=5.0)
+    assert len(out) == 1 and len(gw.calls) == 1 and VALID["bakery"]["title"] in gw.calls[0]["messages"][-1]["content"]
+    entry = out[0]["state"]["specs"][1]
+    assert [v["id"] for v in entry["review"] if not v["ok"]] == ["Ч4"] and entry["review_before"][0]["ok"] is True
+    assert rows[0]["state"]["specs"][1]["review"] == [{"id": "Ч1", "ok": True, "note": ""}]  # input untouched
+    assert entry["rereview"]["model"] == live_settings.review_model and 0 < budget["spent"]
+    assert calibration.reviewer_verdicts(out)[("bakery", "run1")]["Ч4"] == {"ok": False, "note": "нет поля связи"}
+
+
 # --- run_pipeline -----------------------------------------------------------------------------
 
 def fake_state(rub=1.2, status="done", accepted=7, total=8, versions=1, attempts=1, steps=None, remarks=False):
