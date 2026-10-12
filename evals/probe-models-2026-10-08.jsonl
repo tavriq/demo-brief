@@ -1,0 +1,12 @@
+{"step": "spec", "model": "gemini/gemini-3.1-flash-lite", "code": 200, "ms": 6629, "tin": 292, "tout": 1194, "rub": 0.252, "finish": "stop", "json_ok": true, "probe": "p1", "bytes": 4789}
+{"step": "spec", "model": "anthropic/claude-haiku-5-5", "code": 200, "ms": 18900, "tin": 2188, "tout": 2367, "rub": 0.192, "finish": "stop", "json_ok": true, "probe": "p1", "bytes": 9008}
+{"step": "spec", "model": "openai/gpt-4.1-mini", "code": 200, "ms": 11232, "tin": 738, "tout": 900, "rub": 0.234, "finish": "stop", "json_ok": true, "probe": "p1", "bytes": 5363}
+{"step": "prototype", "model": "gemini/gemini-3.1-flash-lite", "code": 200, "ms": 2751, "tin": 655, "tout": 751, "rub": 0.175, "finish": "stop", "probe": "p1", "bytes": 2493, "screens": ["S1", "S2", "S3"]}
+{"step": "prototype", "model": "anthropic/claude-haiku-5-5", "code": 200, "ms": 59934, "tin": 922, "tout": 14000, "rub": 0.965, "finish": "length", "probe": "p1", "bytes": 10406, "screens": ["S1", "S2", "S3"]}
+{"step": "spec", "params": {"reasoning_effort": "low"}, "model": "anthropic/claude-haiku-5-5", "code": 200, "ms": 14539, "tin": 2188, "tout": 1820, "rub": 0.154, "finish": "stop", "probe": "p2", "bytes": 6555}
+{"step": "spec", "params": {"reasoning_effort": "none"}, "model": "anthropic/claude-haiku-5-5", "code": 200, "ms": 11805, "tin": 2188, "tout": 2151, "rub": 0.177, "finish": "stop", "probe": "p2", "bytes": 7917}
+{"step": "prototype", "params": "rich", "model": "gemini/gemini-3.1-flash-lite", "code": 200, "ms": 3893, "tin": 1252, "tout": 1274, "rub": 0.301, "finish": "stop", "probe": "p2", "bytes": 4128, "screens": ["S1", "S2", "S3", "S4"]}
+{"step": "review", "model": "openai/gpt-4.1-mini", "code": 200, "ms": 2394, "tin": 1814, "tout": 109, "rub": 0.121, "finish": "stop", "probe": "p2", "bytes": 275}
+{"step": "review", "model": "gemini/gemini-3.1-flash-lite", "code": 200, "ms": 2509, "tin": 1695, "tout": 236, "rub": 0.106, "finish": "stop", "probe": "p2", "bytes": 555}
+{"step": "prototype", "params": "rich8k", "model": "anthropic/claude-haiku-5-5", "code": 200, "ms": 33253, "tin": 1782, "tout": 8000, "rub": 0.569, "finish": "length", "probe": "p3", "bytes": 10090, "screens": ["S1", "S2", "S3"]}
+{"step": "prototype", "params": "rich8k", "model": "openai/gpt-4.1-mini", "code": 200, "ms": 72507, "tin": 1292, "tout": 6047, "rub": 1.376, "finish": "stop", "probe": "p3", "bytes": 24348, "screens": ["S1", "S2", "S3", "S4"]}

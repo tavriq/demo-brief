@@ -1,0 +1,47 @@
+name: demo-brief
+
+services:
+  app:
+    build: .
+    image: demo-brief:local
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:18105:8000"
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 64
+    # Root filesystem is read-only; state lives in the volume, scratch space in /tmp.
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m
+    env_file:
+      # LLM_API_KEY, LLM_BASE_URL: the server's shared gateway file, never printed.
+      - path: ../llm.env
+        required: false
+    environment:
+      PARSE_MODEL: "gemini/gemini-3.1-flash-lite"
+      SPEC_MODEL: "anthropic/claude-haiku-5-5"
+      REVIEW_MODEL: "openai/gpt-4.1-mini"
+      PROTO_MODEL: "anthropic/claude-haiku-5-5"
+      DAILY_BUDGET_RUB: "15"
+      RUNS_PER_HOUR: "3"
+      MAX_CONCURRENT_RUNS: "2"
+      MAX_BRIEF_CHARS: "500"
+      RUN_TIMEOUT_S: "300"
+      RETENTION_DAYS: "30"
+      # nginx on the host reaches the container through the docker bridge.
+      TRUSTED_PROXY: "172.16.0.0/12"
+    volumes:
+      - demo-brief-var:/var/lib/demo-brief
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  demo-brief-var:
